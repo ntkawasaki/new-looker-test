@@ -10,6 +10,12 @@ view: products {
   dimension: brand {
     type: string
     sql: ${TABLE}.brand ;;
+    html: <a href="https://localhost:9999/dashboards/3?Brand=
+    {{value}}" target="_new">{{value}}</a> ;;
+    link: {
+      label: "Brand Lookup Dashboard"
+      url: "https://localhost:9999/dashboards/3?Brand={{value}}"
+    }
   }
 
   dimension: category {

@@ -47,14 +47,21 @@ view: users {
     sql: ${TABLE}.first_name ;;
   }
 
-  dimension: gender {
-    type: string
-    sql: ${TABLE}.gender ;;
-  }
-
   dimension: last_name {
     type: string
     sql: ${TABLE}.last_name ;;
+    suggest_dimension: email
+  }
+
+  dimension: full_name {
+    type: string
+    sql: CONCAT(${first_name}, " ", ${last_name} ;;
+  }
+
+
+  dimension: gender {
+    type: string
+    sql: ${TABLE}.gender ;;
   }
 
   dimension: state {
@@ -70,6 +77,13 @@ view: users {
   measure: count {
     type: count
     drill_fields: [detail*]
+    link: {
+      label: "{{value}}"
+      url: "https://google.com/
+      newline/{{value}}"
+    }
+    html: <a href="https://google.com/{{value}}/line2/line3/">hello</a>
+    ;;
   }
 
   # ----- Sets of fields for drilling ------

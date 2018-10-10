@@ -2,6 +2,7 @@ connection: "thelook"
 
 # include all the views
 include: "*.view"
+# include: "*name.dashboard"
 
 datagroup: hello_world_default_datagroup {
   # sql_trigger: SELECT MAX(id) FROM etl_log;;
@@ -52,13 +53,57 @@ explore: order_items {
   }
 }
 
-explore: orders {
+# explore: explore_name {
+#
+#   join: channel {
+#     relationship: one_to_many
+#     sql_on:
+#           ${channel.idChannel} =
+#         {% if statistics_daily_by_video._in_query %}
+#           ${statistics_daily_by_video.channelId}
+#         {% elsif statistics_daily_by_user_agent._in_query %}
+#           ${statistics_daily_by_user_agent.channelId}
+#
+#         -- Can add it additional joins if needed
+#
+#         {% endif %} ;;
+#   }
+# }
+
+explore: order_items_2 {
+  from: order_items
+  join: inventory_items {
+    type: left_outer
+    sql_on: ${order_items_2.inventory_item_id} = ${inventory_items.id} ;;
+    relationship: many_to_one
+  }
+
+  join: orders {
+    type: left_outer
+    sql_on: ${order_items_2.order_id} = ${orders.id} ;;
+    relationship: many_to_one
+  }
+
+  join: products {
+    type: left_outer
+    sql_on: ${inventory_items.product_id} = ${products.id} ;;
+    relationship: many_to_one
+  }
+
   join: users {
     type: left_outer
     sql_on: ${orders.user_id} = ${users.id} ;;
     relationship: many_to_one
   }
 }
+
+# explore: orders {
+#   join: users {
+#     type: left_outer
+#     sql_on: ${orders.user_id} = ${users.id} ;;
+#     relationship: many_to_one
+#   }
+# }
 
 explore: products {}
 
@@ -74,4 +119,6 @@ explore: user_data {
 
 explore: users {}
 
-explore: users_nn {}
+explore: user_summary {}
+
+explore: test_select_all {}
