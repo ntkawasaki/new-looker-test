@@ -5,13 +5,13 @@ view: products {
     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;
+    value_format_name: decimal_1
   }
 
   dimension: brand {
     type: string
     sql: ${TABLE}.brand ;;
-    html: <a href="https://localhost:9999/dashboards/3?Brand=
-    {{value}}" target="_new">{{value}}</a> ;;
+    html: <a href="https://localhost:9999/dashboards/3?Brand={{value}}" target="_new">{{value}}</a> ;;
     link: {
       label: "Brand Lookup Dashboard"
       url: "https://localhost:9999/dashboards/3?Brand={{value}}"
@@ -22,6 +22,11 @@ view: products {
     type: string
     sql: ${TABLE}.category ;;
   }
+
+#   dimension: category_liquid {
+#     type:  string
+#     sql: {{ _filters['products.category'] }} ;;
+#   }
 
   dimension: department {
     type: string
@@ -51,5 +56,6 @@ view: products {
   measure: count {
     type: count
     drill_fields: [id, item_name, inventory_items.count]
+    required_fields: [rank]
   }
 }

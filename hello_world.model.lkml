@@ -109,7 +109,14 @@ explore: order_items_2 {
 #   }
 # }
 
-explore: products {}
+explore: products {
+  always_filter: {
+    filters: {
+      field: brand
+      value: ""
+    }
+  }
+}
 
 explore: schema_migrations {}
 

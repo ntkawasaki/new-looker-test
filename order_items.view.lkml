@@ -19,6 +19,11 @@ view: order_items {
     sql: ${TABLE}.order_id ;;
   }
 
+#   filter: hi {
+#     type: string
+#     sql: ${id} = {%   %}  ;;
+#   }
+
   dimension_group: returned {
     type: time
     timeframes: [
@@ -33,6 +38,11 @@ view: order_items {
       month_num
     ]
     sql: ${TABLE}.returned_at ;;
+  }
+
+  dimension: returned {
+    type: yesno
+    sql: ${returned_date} IS NOT NULL ;;
   }
 
   dimension: sale_price {
@@ -84,13 +94,82 @@ view: order_items {
 
   measure: total_sale_price {
     type: sum
-    sql: ${sale_price} ;;
+    sql: ${sale_price} / 1.5;;
 #     html:
 #     {% if value > 30000 %}
 #       {{ rendered_value | round: 5}}
 #     {% else %}
 #       {{ rendered_value | round: 10}}
 #     {% endif %};;
+  }
+
+  measure: total_sale_price_liquid {
+    type: sum
+    sql: ${sale_price} ;;
+    html:
+    {% if value > 30000 %}
+      {{ rendered_value | round: 5}}
+    {% else %}
+      {{ rendered_value | round: 10}}
+    {% endif %};;
+  }
+
+  parameter: metric {
+    type: unquoted
+    allowed_value: {
+      label: "usd"
+      value: "usd"
+    }
+    allowed_value: {
+      label: "percent"
+      value: "percent"
+    }
+    allowed_value: {
+      label: "decimal"
+      value: "decimal"
+    }
+    allowed_value: {
+      label: "int"
+      value: "int"
+    }
+  }
+
+  measure: total_sale_price_liquid_with_metrics {
+    type: sum
+    sql: ${sale_price} / 1.5 ;;
+    value_format: "0"
+    html:
+    {% if metric._parameter_value == 'usd' %}
+      ${{ value | round: 3}}
+    {% elsif metric._parameter_value == 'percent' %}
+      {{ value | round: 2}}%
+    {% elsif metric._parameter_value == 'decimal' %}
+      {{ value | round: 2}}
+    {% elsif metric._parameter_value == 'int' %}
+      {{ value | round: 0 }}
+    {% endif %};;
+  }
+
+  measure: percentile_sale_price {
+    type: percentile
+    percentile: 75
+    sql: ${sale_price} ;;
+  }
+
+  parameter: percentile_in_decimals {
+    type: number
+  }
+
+  measure: percentile_sale_price_liquid {
+    type: number
+    sql: CASE WHEN CAST(FLOOR(COUNT(order_items.sale_price ) * {% parameter percentile_in_decimals %} - 0.00000001) AS SIGNED) + 1 =
+    CAST(FLOOR(COUNT(order_items.sale_price ) * {% parameter percentile_in_decimals %}) AS SIGNED) + 1 OR COUNT(order_items.sale_price ) = 1 THEN
+    CAST(REPLACE(SUBSTRING(CAST(GROUP_CONCAT( LPAD(SUBSTRING(CAST(order_items.sale_price  AS CHAR), 1, 20), 20, '*') ORDER BY
+    order_items.sale_price   SEPARATOR '' ) AS CHAR), (CAST(FLOOR(COUNT(order_items.sale_price ) * {% parameter percentile_in_decimals %} -
+    0.00000001) AS SIGNED) + 1 - 1) * 20 + 1, 20), '*', ' ') AS DECIMAL(20, 5)) ELSE (CAST(REPLACE(SUBSTRING(CAST(GROUP_CONCAT( LPAD(SUBSTRING(CAST(order_items.sale_price  AS
+    CHAR), 1, 20), 20, '*') ORDER BY order_items.sale_price   SEPARATOR '' ) AS CHAR), (CAST(FLOOR(COUNT(order_items.sale_price ) * {% parameter percentile_in_decimals %} - 0.00000001) AS SIGNED)
+    + 1 - 1) * 20 + 1, 20), '*', ' ') AS DECIMAL(20, 5)) + CAST(REPLACE(SUBSTRING(CAST(GROUP_CONCAT( LPAD(SUBSTRING(CAST(order_items.sale_price  AS CHAR), 1, 20), 20, '*') ORDER BY order_items.sale_price   SEPARATOR '' )
+    AS CHAR), (CAST(FLOOR(COUNT(order_items.sale_price ) *{% parameter percentile_in_decimals %}) AS SIGNED) + 1 - 1) * 20 + 1, 20), '*', ' ') AS DECIMAL(20, 5))) / 2 END ;;
   }
 
   measure: average_sale_price {

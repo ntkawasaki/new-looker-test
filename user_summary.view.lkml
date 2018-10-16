@@ -14,6 +14,8 @@ view: user_summary {
       o.user_id = u.id
       GROUP BY 1, 2
        ;;
+      persist_for: "24 hours"
+      indexes: ["user"]
   }
 
   parameter: threshold {
