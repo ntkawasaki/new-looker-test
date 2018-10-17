@@ -75,6 +75,7 @@ explore: order_items {
 # }
 
 explore: order_items_2 {
+  hidden: yes
   from: order_items
   join: inventory_items {
     type: left_outer

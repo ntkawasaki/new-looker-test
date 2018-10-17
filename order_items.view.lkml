@@ -45,6 +45,32 @@ view: order_items {
     sql: ${returned_date} IS NOT NULL ;;
   }
 
+  dimension: sale_price_liquid_and_test {
+    type: string
+    sql:  ${sale_price} ;;
+    html: {% if returned._value == 'No' and value > 10 %}
+          Inside If
+          {% else %}
+          Else
+          {% endif %} ;;
+  }
+
+#   dimension: laura_murphy_liquid_test {
+#     type: string
+#     sql: ${sale_price}
+#     html:
+#     {% if value >= 1 and publisher_kpi_report.audience_development_referrers == 'Direct Home Page' %}
+#     <div style="color: DarkGreen; background-color: #C6EFCE; text-align: right; font-weight: bold">
+#     <img style="float: left" src="https://storage.googleapis.com/hnp_looker/arrow-up.png" />
+#     {% elsif value >= 0.90 and publisher_kpi_report.audience_development_referrers == 'Direct Home Page' %}
+#     <div style="color: DarkGoldenRod; background-color: #FFEB9C; text-align: right; font-weight: bold">
+#     {% elsif value < 0.90 and publisher_kpi_report.audience_development_referrers == 'Direct Home Page' %}
+#     <div style="color: DarkRed; background-color: #FFC7CE; text-align: right; font-weight: bold">
+#     <img style="float: left" src="https://storage.googleapis.com/hnp_looker/arrow-down.png" />
+#     {% endif %}
+#     {{ rendered_value }}
+#     </div>;;}
+
   dimension: sale_price {
     type: number
     sql: ${TABLE}.sale_price ;;
@@ -137,16 +163,15 @@ view: order_items {
   measure: total_sale_price_liquid_with_metrics {
     type: sum
     sql: ${sale_price} / 1.5 ;;
-    value_format: "0"
     html:
     {% if metric._parameter_value == 'usd' %}
-      ${{ value | round: 3}}
+     ${{ rendered_value | round: 3}}
     {% elsif metric._parameter_value == 'percent' %}
-      {{ value | round: 2}}%
+      {{ rendered_value }}%
     {% elsif metric._parameter_value == 'decimal' %}
-      {{ value | round: 2}}
+      {{ rendered_value }}
     {% elsif metric._parameter_value == 'int' %}
-      {{ value | round: 0 }}
+      {{ rendered_value }}
     {% endif %};;
   }
 

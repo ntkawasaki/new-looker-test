@@ -30,6 +30,16 @@ view: orders {
     sql: ${TABLE}.created_at ;;
   }
 
+  dimension: c_or_p {
+    type: string
+    sql:
+      CASE
+        WHEN ${created_raw} > "2017-10-01" THEN "C"
+        WHEN (${created_raw} < "2017-10-01" AND ${created_raw} > "2016-10-01") THEN "P"
+      END
+    ;;
+  }
+
   dimension: status {
     type: string
     sql: ${TABLE}.status ;;
