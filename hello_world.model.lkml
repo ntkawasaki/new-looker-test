@@ -15,23 +15,31 @@ datagroup: hello_world_default_datagroup {
 
 persist_with: hello_world_default_datagroup
 
-explore: events {
+explore: view_name_in_query {
+  from: orders
+  sql_always_where:
+  {% if users._in_query %}
+    users.age > 40
+  {% else %}
+    1=1
+  {% endif %}
+  ;;
+
   join: users {
     type: left_outer
-    sql_on: ${events.user_id} = ${users.id} ;;
-    relationship: many_to_one
-  }
-}
-
-explore: inventory_items {
-  join: products {
-    type: left_outer
-    sql_on: ${inventory_items.product_id} = ${products.id} ;;
+    sql_on: ${view_name_in_query.user_id} = ${users.id} ;;
     relationship: many_to_one
   }
 }
 
 explore: order_items {
+  sql_always_where:
+    {% if order_items.order_id._in_query or order_items.inventory_item_id._in_query %}
+    "IT WORKED" = "IT WORKED"
+    {% else %}
+    "ELSE" = "ELSE"
+    {% endif %} ;;
+
   join: inventory_items {
     type: left_outer
     sql_on: ${order_items.inventory_item_id} = ${inventory_items.id} ;;

@@ -19,6 +19,11 @@ view: order_items {
     sql: ${TABLE}.order_id ;;
   }
 
+  dimension: really_long_id {
+    type: number
+    sql: 111222333444555666 * 1.0 ;;
+  }
+
 #   filter: hi {
 #     type: string
 #     sql: ${id} = {%   %}  ;;
@@ -43,6 +48,41 @@ view: order_items {
   dimension: returned {
     type: yesno
     sql: ${returned_date} IS NOT NULL ;;
+  }
+
+  dimension: if_order_id_or_inventory_id_test {
+    type: string
+    sql:
+    {% if order_id._in_query or inventory_item_id._in_query %}
+    "IT WORKED"
+    {% else %}
+    "ELSE"
+    {% endif %}
+    ;;
+  }
+
+  dimension: returned_liquid_bang_if {
+    type: yesno
+    sql: ${returned_date} IS NOT NULL ;;
+    html:
+      {% if value != 'Yes' %}
+        Not Yes
+      {% else %}
+        Else
+      {% endif %}
+    ;;
+  }
+
+  dimension: returned_liquid_unless {
+    type: yesno
+    sql: ${returned_date} IS NOT NULL ;;
+    html:
+      {% unless value == 'Yes' %}
+        Not Yes
+      {% else %}
+        Else
+      {% endunless %}
+    ;;
   }
 
   dimension: sale_price_liquid_and_test {
