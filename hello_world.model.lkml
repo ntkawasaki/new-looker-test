@@ -33,12 +33,12 @@ explore: view_name_in_query {
 }
 
 explore: order_items {
-  sql_always_where:
-    {% if order_items.order_id._in_query or order_items.inventory_item_id._in_query %}
-    "IT WORKED" = "IT WORKED"
-    {% else %}
-    "ELSE" = "ELSE"
-    {% endif %} ;;
+#   sql_always_where:
+#     {% if order_items.order_id._in_query or order_items.inventory_item_id._in_query %}
+#     "IT WORKED" = "IT WORKED"
+#     {% else %}
+#     "ELSE" = "ELSE"
+#     {% endif %} ;;
 
   join: inventory_items {
     type: left_outer

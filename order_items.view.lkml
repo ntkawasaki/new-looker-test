@@ -1,5 +1,19 @@
 view: order_items {
-  sql_table_name: demo_db.order_items ;;
+  sql_table_name: demo_db.order_items;;
+
+  parameter: yesno_tester {
+    type: yesno
+  }
+
+  dimension: yesno_tester_dimension {
+    type: string
+    sql: {% if !yesno_tester._parameter_value %}
+          "RETURNED TRUE"
+         {% endif %}
+          "RETURNED FALSE"
+          ;;
+  }
+
 
   dimension: id {
     primary_key: yes
@@ -48,6 +62,15 @@ view: order_items {
   dimension: returned {
     type: yesno
     sql: ${returned_date} IS NOT NULL ;;
+  }
+
+  dimension: returned_url {
+    type: string
+    sql: COALESCE(${TABLE}.returned_at, 'THIS IS NULL') ;;
+    link: {
+      url: "{% unless value == 'THIS IS NULL'%}www.google.com/{{value}}{% endunless %}"
+      label: "hi"
+    }
   }
 
   dimension: if_order_id_or_inventory_id_test {
@@ -114,6 +137,10 @@ view: order_items {
   dimension: sale_price {
     type: number
     sql: ${TABLE}.sale_price ;;
+#     sql: 'xxxyyyzzz' ;;
+    link: {
+      url: "{% unless value == 'xxxyyyzzz'%}www.google.com/{{value}}{% endunless %}"
+    }
   }
 
   dimension: sale_price_test {
@@ -158,15 +185,34 @@ view: order_items {
     drill_fields: [id, inventory_items.id, orders.id]
   }
 
+  # FROM LAURENS CHAT
+  parameter: threshold {
+    type: number
+    default_value: "10"
+  }
+
+  measure: plus_minus_count {
+    type: count
+    link: {
+      label: "Explore Within Threshold: ({{low}}, {{high}})"
+      url: "{% assign low = value | minus: threshold._parameter_value %}{% assign high = value | plus: threshold._parameter_value %}/explore/hello_world/order_items?fields=orders.created_month,order_items.plus_minus_count,&f[order_items.count]={{low}} to {{high}}"
+    }
+  }
+
   measure: total_sale_price {
     type: sum
-    sql: ${sale_price} / 1.5;;
+    sql: ${sale_price};;
 #     html:
 #     {% if value > 30000 %}
 #       {{ rendered_value | round: 5}}
 #     {% else %}
 #       {{ rendered_value | round: 10}}
 #     {% endif %};;
+  }
+
+  measure: percent_of_total_sale_price {
+    type: percent_of_total
+    sql: ${total_sale_price} ;;
   }
 
   measure: total_sale_price_liquid {

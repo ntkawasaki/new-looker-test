@@ -56,6 +56,18 @@ view: orders {
     drill_fields: [id, users.first_name, users.last_name, users.id, order_items.count]
   }
 
+  measure: count_without_liquid_link {
+    type: count
+  }
+
+  measure: count_with_liquid_link {
+    type: count
+    link: {
+      label: "Hello World!"
+      url: "https://www.google.com/search?q={{ status._value }}"
+    }
+  }
+
   measure: completed_count {
     type: count
     filters: {
