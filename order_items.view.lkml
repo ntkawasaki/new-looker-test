@@ -14,6 +14,14 @@ view: order_items {
           ;;
   }
 
+  parameter: string_param {
+    type: string
+  }
+
+  filter: string_filter {
+    type: string
+  }
+
 
   dimension: id {
     primary_key: yes
@@ -264,7 +272,9 @@ view: order_items {
   measure: percentile_sale_price {
     type: percentile
     percentile: 75
+    drill_fields: [order_id]
     sql: ${sale_price} ;;
+    html: {{link}} ;;
   }
 
   parameter: percentile_in_decimals {

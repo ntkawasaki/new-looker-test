@@ -7,6 +7,25 @@ view: users {
     sql: ${TABLE}.id ;;
   }
 
+  parameter: country_param {
+    type: string
+    allowed_value: {
+      label: "United States"
+      value: "United States"
+    }
+    allowed_value: {
+      label: "All"
+      value: "All"
+    }
+  }
+
+#   FROM
+#   {% if country_param._parameter_value == 'United States' %}
+#   table_1
+#   {% else %}
+#   table_2
+#   {% endif %}
+
   dimension: age {
     type: number
     sql: ${TABLE}.age ;;

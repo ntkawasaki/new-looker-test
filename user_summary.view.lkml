@@ -9,6 +9,11 @@ view: user_summary {
         COUNT(DISTINCT oi.id) AS distinct_items,
         COUNT(DISTINCT CASE WHEN (oi.sale_price > {% parameter threshold %}) THEN oi.id ELSE NULL END) AS count_distinct_items_over_threshold
       FROM
+      {% if _filters['user_summary.user'] contains 'United States' %}
+      -- IF COMMENT
+      {% else %}
+      -- ELSE COMMENT
+      {% endif %}
       order_items oi LEFT JOIN orders o ON
       oi.order_id = o.id LEFT JOIN users u ON
       o.user_id = u.id

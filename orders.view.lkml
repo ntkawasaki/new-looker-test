@@ -30,11 +30,12 @@ view: orders {
     sql: ${TABLE}.created_at ;;
   }
 
+
   dimension: c_or_p {
     type: string
     sql:
       CASE
-        WHEN ${created_raw} > "2017-10-01" THEN "C"
+        WHEN (${created_raw} > "2017-10-01" THEN "C")
         WHEN (${created_raw} < "2017-10-01" AND ${created_raw} > "2016-10-01") THEN "P"
       END
     ;;
@@ -54,6 +55,11 @@ view: orders {
   measure: count {
     type: count
     drill_fields: [id, users.first_name, users.last_name, users.id, order_items.count]
+  }
+
+  measure: count_divided {
+    type: number
+    sql: COUNT(*)/4000 ;;
   }
 
   measure: count_without_liquid_link {

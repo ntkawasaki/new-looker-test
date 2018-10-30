@@ -1,0 +1,145 @@
+# explore: user_summary_x {}
+# explore: user_summary_y {}
+#
+# view: user_summary_x {
+#   derived_table: {
+#     sql:
+#     SELECT
+#         CONCAT(u.first_name, ' ', u.last_name) AS user,
+#         u.id AS user_id,
+#         SUM(oi.sale_price) AS total_sales_from_user,
+#         AVG(oi.sale_price) AS avg_revenue_from_user,
+#         COUNT(DISTINCT oi.id) AS distinct_items,
+#         COUNT(DISTINCT CASE WHEN (oi.sale_price > {% parameter threshold %}) THEN oi.id ELSE NULL END) AS count_distinct_items_over_threshold
+#       FROM
+#       WHERE {% condition temp %} u.id {% endcondition %}
+#       order_items oi LEFT JOIN orders o ON
+#       oi.order_id = o.id LEFT JOIN users u ON
+#       o.user_id = u.id
+#       GROUP BY 1, 2
+#        ;;
+#     persist_for: "24 hours"
+#     indexes: ["user"]
+#   }
+#
+# #   parameter: threshold {
+# #     type: number
+# #   }
+#
+#   filter: temp {
+#     type: string
+#   }
+#
+#   measure: count {
+#     type: count
+#     drill_fields: [detail*]
+#   }
+#
+#   dimension: user {
+#     type: string
+#     sql: ${TABLE}.user ;;
+#   }
+#
+#   dimension: user_id {
+#     type: number
+#     sql: ${TABLE}.user_id ;;
+#   }
+#
+#   dimension: total_sales_from_user {
+#     type: number
+#     sql: ${TABLE}.total_sales_from_user ;;
+#   }
+#
+#   dimension: avg_revenue_from_user {
+#     type: number
+#     sql: ${TABLE}.avg_revenue_from_user ;;
+#   }
+#
+#   dimension: distinct_items {
+#     type: number
+#     sql: ${TABLE}.distinct_items ;;
+#   }
+#
+#   dimension: count_distinct_items_over_threshold {
+#     type: number
+#     sql: ${TABLE}.count_distinct_items_over_threshold ;;
+#   }
+#
+#   set: detail {
+#     fields: [
+#       user,
+#       user_id,
+#       total_sales_from_user,
+#       avg_revenue_from_user,
+#       distinct_items,
+#       count_distinct_items_over_threshold
+#     ]
+#   }
+# }
+#
+# view: user_summary_y {
+#   derived_table: {
+#     sql:
+#     SELECT
+#         CONCAT(u.first_name, ' ', u.last_name) AS user,
+#         u.id AS user_id,
+#         SUM(oi.sale_price) AS total_sales_from_user,
+#         AVG(oi.sale_price) AS avg_revenue_from_user,
+#         COUNT(DISTINCT oi.id) AS distinct_items,
+#         COUNT(DISTINCT CASE WHEN (oi.sale_price > {% parameter threshold %}) THEN oi.id ELSE NULL END) AS count_distinct_items_over_threshold
+#       FROM
+#       order_items oi LEFT JOIN orders o ON
+#       oi.order_id = o.id LEFT JOIN users u ON
+#       o.user_id = u.id
+#       GROUP BY 1, 2
+#        ;;
+#     persist_for: "24 hours"
+#     indexes: ["user"]
+#   }
+#
+#   measure: count {
+#     type: count
+#     drill_fields: [detail*]
+#   }
+#
+#   dimension: user {
+#     type: string
+#     sql: ${TABLE}.user ;;
+#   }
+#
+#   dimension: user_id {
+#     type: number
+#     sql: ${TABLE}.user_id ;;
+#   }
+#
+#   dimension: total_sales_from_user {
+#     type: number
+#     sql: ${TABLE}.total_sales_from_user ;;
+#   }
+#
+#   dimension: avg_revenue_from_user {
+#     type: number
+#     sql: ${TABLE}.avg_revenue_from_user ;;
+#   }
+#
+#   dimension: distinct_items {
+#     type: number
+#     sql: ${TABLE}.distinct_items ;;
+#   }
+#
+#   dimension: count_distinct_items_over_threshold {
+#     type: number
+#     sql: ${TABLE}.count_distinct_items_over_threshold ;;
+#   }
+#
+#   set: detail {
+#     fields: [
+#       user,
+#       user_id,
+#       total_sales_from_user,
+#       avg_revenue_from_user,
+#       distinct_items,
+#       count_distinct_items_over_threshold
+#     ]
+#   }
+# }

@@ -83,7 +83,6 @@ explore: order_items {
 # }
 
 explore: order_items_2 {
-  hidden: yes
   from: order_items
   join: inventory_items {
     type: left_outer
@@ -134,6 +133,10 @@ explore: user_data {
     type: left_outer
     sql_on: ${user_data.user_id} = ${users.id} ;;
     relationship: many_to_one
+  }
+  access_filter: {
+    field: users.first_name
+    user_attribute: test_attribute
   }
 }
 
