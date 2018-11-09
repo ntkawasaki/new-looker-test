@@ -7,7 +7,7 @@ view: order_items {
 
   dimension: yesno_tester_dimension {
     type: string
-    sql: {% if !yesno_tester._parameter_value %}
+    sql: {% if yesno_tester._parameter_value %}
           "RETURNED TRUE"
          {% endif %}
           "RETURNED FALSE"
@@ -20,8 +20,8 @@ view: order_items {
 
   filter: string_filter {
     type: string
+    suggest_dimension: orders.status
   }
-
 
   dimension: id {
     primary_key: yes
