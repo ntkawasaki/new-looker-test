@@ -54,15 +54,6 @@ view: order_items {
   dimension_group: returned {
     type: time
     timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year,
-      month_name,
-      month_num
     ]
     sql: ${TABLE}.returned_at ;;
   }
@@ -296,5 +287,10 @@ view: order_items {
   measure: average_sale_price {
     type: average
     sql: ${sale_price} ;;
+  }
+
+  measure: negative_sum_sale_price {
+    type: sum
+    sql: ${sale_price} - 3000 ;;
   }
 }

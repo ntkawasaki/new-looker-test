@@ -6,14 +6,8 @@ view: user_summary {
         u.id AS user_id,
         SUM(oi.sale_price) AS total_sales_from_user,
         AVG(oi.sale_price) AS avg_revenue_from_user,
-        COUNT(DISTINCT oi.id) AS distinct_items,
-        COUNT(DISTINCT CASE WHEN (oi.sale_price > {% parameter threshold %}) THEN oi.id ELSE NULL END) AS count_distinct_items_over_threshold
+        --COUNT(DISTINCT oi.id) AS distinct_items
       FROM
-      {% if _filters['user_summary.user'] contains 'United States' %}
-      -- IF COMMENT
-      {% else %}
-      -- ELSE COMMENT
-      {% endif %}
       order_items oi LEFT JOIN orders o ON
       oi.order_id = o.id LEFT JOIN users u ON
       o.user_id = u.id
@@ -23,13 +17,8 @@ view: user_summary {
       indexes: ["user"]
   }
 
-  parameter: threshold {
-    type: number
-  }
-
   measure: count {
     type: count
-    drill_fields: [detail*]
   }
 
   dimension: user {
@@ -57,19 +46,4 @@ view: user_summary {
     sql: ${TABLE}.distinct_items ;;
   }
 
-  dimension: count_distinct_items_over_threshold {
-    type: number
-    sql: ${TABLE}.count_distinct_items_over_threshold ;;
-  }
-
-  set: detail {
-    fields: [
-      user,
-      user_id,
-      total_sales_from_user,
-      avg_revenue_from_user,
-      distinct_items,
-      count_distinct_items_over_threshold
-    ]
-  }
 }

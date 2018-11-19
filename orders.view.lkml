@@ -17,17 +17,17 @@ view: orders {
   dimension_group: created {
     type: time
     timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year,
-      month_name,
-      month_num
     ]
     sql: ${TABLE}.created_at ;;
+  }
+
+  parameter: quarter_parameter {
+    type: string
+  }
+
+  dimension: is_quarter_parameter {
+    type: yesno
+    sql: ${created_quarter} = {% parameter quarter_parameter %} ;;
   }
 
 
@@ -60,6 +60,10 @@ view: orders {
   measure: count {
     type: count
     drill_fields: [id, users.first_name, users.last_name, users.id, order_items.count]
+  }
+
+  measure: negative_count {
+    type: count
   }
 
   measure: count_divided {
