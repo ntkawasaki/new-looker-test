@@ -6,7 +6,6 @@ view: user_summary {
         u.id AS user_id,
         SUM(oi.sale_price) AS total_sales_from_user,
         AVG(oi.sale_price) AS avg_revenue_from_user,
-        --COUNT(DISTINCT oi.id) AS distinct_items
       FROM
       order_items oi LEFT JOIN orders o ON
       oi.order_id = o.id LEFT JOIN users u ON
@@ -16,6 +15,7 @@ view: user_summary {
       persist_for: "24 hours"
       indexes: ["user"]
   }
+#         --COUNT(DISTINCT oi.id) AS distinct_items
 
   measure: count {
     type: count
