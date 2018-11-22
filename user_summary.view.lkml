@@ -5,7 +5,7 @@ view: user_summary {
         CONCAT(u.first_name, ' ', u.last_name) AS user,
         u.id AS user_id,
         SUM(oi.sale_price) AS total_sales_from_user,
-        AVG(oi.sale_price) AS avg_revenue_from_user,
+        AVG(oi.sale_price) AS avg_revenue_from_user
       FROM
       order_items oi LEFT JOIN orders o ON
       oi.order_id = o.id LEFT JOIN users u ON
@@ -24,6 +24,18 @@ view: user_summary {
   dimension: user {
     type: string
     sql: ${TABLE}.user ;;
+    link: {
+      label: "Dashboard 0"
+      url: "/dashboards/0..."
+    }
+    link: {
+      label: "Dashboard 1"
+      url: "/dashboards/1..."
+    }
+    link: {
+      label: "Dashboard 2"
+      url: "/dashboards/2..."
+    }
   }
 
   dimension: user_id {

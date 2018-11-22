@@ -86,6 +86,7 @@ view: users {
   dimension: state {
     type: string
     sql: ${TABLE}.state ;;
+    map_layer_name: us_states
   }
 
   dimension: zip {
@@ -96,13 +97,11 @@ view: users {
   measure: count {
     type: count
     drill_fields: [detail*]
-    link: {
-      label: "{{value}}"
-      url: "https://google.com/
-      newline/{{value}}"
-    }
-    html: <a href="https://google.com/{{value}}/line2/line3/">hello</a>
-    ;;
+#     link: {
+#       label: "{{value}}"
+#       url: "https://google.com/
+#       newline/{{value}}"
+#     }
   }
 
   # ----- Sets of fields for drilling ------

@@ -285,6 +285,7 @@ view: order_items {
   }
 
   measure: average_sale_price {
+    label: "Average Sale\'s"
     type: average
     sql: ${sale_price} ;;
   }
