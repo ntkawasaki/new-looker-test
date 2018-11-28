@@ -29,6 +29,21 @@ view: order_items {
     sql: ${TABLE}.id ;;
   }
 
+  dimension: id_copy {
+    type: number
+    sql: ${TABLE}.id ;;
+    html:
+      {% assign threshold_number = threshold._parameter_value | plus: 0 %}
+      {% if value > threshold_number %}
+        "GREATER"
+      {% else %}
+        "LOWER"
+      {% endif %}
+    ;;
+  }
+
+
+
   dimension: inventory_item_id {
     type: number
     # hidden: yes

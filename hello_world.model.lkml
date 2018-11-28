@@ -23,6 +23,12 @@ explore: view_name_in_query {
     1=1
   {% endif %}
   ;;
+  always_filter: {
+    filters: {
+      field: view_name_in_query.status
+      value: "-pending, -completed"
+    }
+  }
 
   join: users {
     type: left_outer
