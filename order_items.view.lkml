@@ -23,6 +23,14 @@ view: order_items {
     suggest_dimension: orders.status
   }
 
+  filter: date_filter {
+    type: date
+  }
+
+  filter: date_time_filter {
+    type: date_time
+  }
+
   dimension: id {
     primary_key: yes
     type: number
@@ -122,14 +130,11 @@ view: order_items {
     ;;
   }
 
-  dimension: sale_price_liquid_and_test {
-    type: string
+  dimension: sale_price_brazilian {
+    type: number
     sql:  ${sale_price} ;;
-    html: {% if returned._value == 'No' and value > 10 %}
-          Inside If
-          {% else %}
-          Else
-          {% endif %} ;;
+#     value_format: "\R$0\,00"
+#     value_format_name: brazilian
   }
 
 #   dimension: laura_murphy_liquid_test {
@@ -222,6 +227,16 @@ view: order_items {
 #     {% else %}
 #       {{ rendered_value | round: 10}}
 #     {% endif %};;
+  }
+
+  measure: dynamic_total_sale_price_by_status {
+    type: number
+    sql: SUM(CASE WHEN  ;;
+  }
+
+  parameter: dynamic_status {
+    type: string
+    suggest_dimension: orders.status
   }
 
   measure: percent_of_total_sale_price {

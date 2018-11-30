@@ -1,10 +1,5 @@
-# NOT MASTER
-
-
-
 connection: "thelook"
 
-# include all the views
 include: "*.view"
 
 datagroup: hello_world_default_datagroup {
@@ -146,6 +141,10 @@ explore: user_data {
 }
 
 explore: users {}
+
+# named_value_format: brazilian {
+#   value_format: "\R$ 0\,00"
+# }
 
 explore: user_summary {}
 
