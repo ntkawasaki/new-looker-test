@@ -6,6 +6,7 @@ datagroup: hello_world_default_datagroup {
   # sql_trigger: SELECT MAX(id) FROM etl_log;;
   max_cache_age: "1 hour"
 }
+week_start_day: monday
 
 persist_with: hello_world_default_datagroup
 
@@ -17,6 +18,7 @@ explore: view_name_in_query {
   {% else %}
     1=1
   {% endif %}
+  --"{{users._in_query}}"
   ;;
   always_filter: {
     filters: {

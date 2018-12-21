@@ -14,6 +14,11 @@ view: orders {
     sql: ${TABLE}.id ;;
   }
 
+  dimension: string_id {
+    type: string
+    sql: ${TABLE}.id ;;
+  }
+
   dimension_group: created {
     type: time
     timeframes: [

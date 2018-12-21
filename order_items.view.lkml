@@ -18,6 +18,11 @@ view: order_items {
     type: string
   }
 
+  dimension: string_param_test {
+    type: string
+    sql: {% parameter string_param %} ;;
+  }
+
   filter: string_filter {
     type: string
     suggest_dimension: orders.status

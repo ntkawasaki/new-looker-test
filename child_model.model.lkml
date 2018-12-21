@@ -8,3 +8,15 @@ include: "base.other.lkml"
 explore: child_products {
   extends: [parent_products]
 }
+
+view: view_name {
+  derived_table: {
+    sql:
+    {% assign tables = "pdt_1.SQL_TABLE_NAME, pdt_2.SQL_TABLE_NAME, pdt_3.SQL_TABLE_NAME" | split ", " %}
+
+    {% for table in tables %}
+    SELECT * FROM {{ table }} UNION ALL
+    {% endfor %}
+;;
+  }
+}
