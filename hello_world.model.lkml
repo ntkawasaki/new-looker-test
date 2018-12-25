@@ -6,11 +6,21 @@ datagroup: hello_world_default_datagroup {
   # sql_trigger: SELECT MAX(id) FROM etl_log;;
   max_cache_age: "1 hour"
 }
-week_start_day: monday
+
+datagroup: etl_users {
+  sql_trigger: SELECT MAX(DATE(users.created_at)) FROM demo_db.users AS users ;;
+  max_cache_age: "24 hours"
+}
+
+datagroup: etl_orders {
+  sql_trigger: SELECT MAX(orders.id) FROM demo_db.orders  AS orders  ;;
+  max_cache_age: "24 hours"
+}
 
 persist_with: hello_world_default_datagroup
 
 explore: view_name_in_query {
+  hidden: yes
   from: orders
   sql_always_where:
   {% if users._in_query %}
