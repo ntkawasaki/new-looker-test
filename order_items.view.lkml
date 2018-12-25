@@ -226,18 +226,13 @@ view: order_items {
   measure: total_sale_price {
     type: sum
     sql: ${sale_price};;
-#     html:
-#     {% if value > 30000 %}
-#       {{ rendered_value | round: 5}}
-#     {% else %}
-#       {{ rendered_value | round: 10}}
-#     {% endif %};;
+    value_format_name: usd
   }
-
-  measure: dynamic_total_sale_price_by_status {
-    type: number
-    sql: SUM(CASE WHEN  ;;
-  }
+#
+#   measure: dynamic_total_sale_price_by_status {
+#     type: number
+#     sql: SUM(CASE WHEN  ;;
+#   }
 
   parameter: dynamic_status {
     type: string

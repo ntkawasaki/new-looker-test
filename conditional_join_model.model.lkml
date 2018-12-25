@@ -4,6 +4,7 @@ include: "*.view.lkml"                       # include all views in this project
 
 explore: order_items_conditional {
   from: order_items
+  hidden: yes
 
   join: orders {
     type: left_outer
