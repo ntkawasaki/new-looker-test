@@ -19,27 +19,25 @@ datagroup: etl_orders {
 
 persist_with: hello_world_default_datagroup
 
-explore: view_name_in_query {
+explore: test_explore {
   hidden: yes
   from: orders
   sql_always_where:
   {% if users._in_query %}
-    users.age > 40
+    # users.age IS NOT NULL
   {% else %}
     1=1
   {% endif %}
   --"{{users._in_query}}"
   ;;
-  always_filter: {
-    filters: {
-      field: view_name_in_query.status
-      value: "-pending, -completed"
-    }
+  access_filter: {
+    field: status
+    user_attribute: my_status
   }
 
   join: users {
     type: left_outer
-    sql_on: ${view_name_in_query.user_id} = ${users.id} ;;
+    sql_on: ${test_explore.user_id} = ${users.id} ;;
     relationship: many_to_one
   }
 }

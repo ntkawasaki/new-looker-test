@@ -14,6 +14,11 @@ view: order_items {
           ;;
   }
 
+  dimension: from_order_liquid {
+    type: string
+    sql: "{{ orders.from_orders._parameter_value }}" ;;
+  }
+
   parameter: string_param {
     type: string
   }
@@ -239,10 +244,14 @@ view: order_items {
     suggest_dimension: orders.status
   }
 
-  measure: percent_of_total_sale_price {
-    type: percent_of_total
-    sql: ${total_sale_price} ;;
-  }
+#   measure: percent_of_total_sale_price {
+#     type: percent_of_total
+#     sql: ${total_sale_price} ;;
+#     filters: {
+#       field: orders.status
+#       value: "pending"
+#     }
+#   }
 
   measure: total_sale_price_liquid {
     type: sum

@@ -19,6 +19,11 @@ view: orders {
     sql: ${TABLE}.id ;;
   }
 
+  parameter: from_orders {
+    type: string
+    suggest_dimension: orders.status
+  }
+
   dimension_group: created {
     type: time
     timeframes: [
@@ -49,6 +54,47 @@ view: orders {
   dimension: status {
     type: string
     sql: ${TABLE}.status ;;
+  }
+
+  dimension: sql_case {
+    type: string
+    sql:
+    CASE
+      WHEN ${status} like "%a%" THEN 'Has Vowel'
+      WHEN ${status} like "%b%" THEN 'Has Consonant'
+      WHEN ${status} like "%e%" THEN 'Has Vowel'
+      WHEN ${status} like "%c%" THEN 'Has Consonant'
+      ELSE 'Neither'
+    END
+    ;;
+  }
+
+  dimension: lookml_case {
+    type: string
+    case: {
+      when: {
+        label: "Has Vowel"
+        sql: ${status} like "%a%" ;;
+      }
+
+      when: {
+        label: "Has Consonant"
+        sql: ${status} like "%b%" ;;
+      }
+
+      when: {
+        label: "Has Vowel"
+        sql: ${status} like "%e%" ;;
+      }
+
+      when: {
+        label: "Has Consonant"
+        sql: ${status} like "%c%" ;;
+      }
+
+      else: "Neither"
+
+    }
   }
 
   dimension: new_status {
@@ -103,8 +149,6 @@ view: orders {
       value: "pending"
     }
   }
-
-
 
 
 

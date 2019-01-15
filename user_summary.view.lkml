@@ -10,12 +10,31 @@ view: user_summary {
       order_items oi LEFT JOIN orders o ON
       oi.order_id = o.id LEFT JOIN users u ON
       o.user_id = u.id
+      WHERE u.id = {% parameter dynamic_id %}
+      GROUP BY 1, 2
+
+      UNION ALL
+
+      SELECT
+        CONCAT(u.first_name, ' ', u.last_name) AS user,
+        u.id AS user_id,
+        SUM(oi.sale_price) AS total_sales_from_user,
+        AVG(oi.sale_price) AS avg_revenue_from_user
+      FROM
+      order_items oi LEFT JOIN orders o ON
+      oi.order_id = o.id LEFT JOIN users u ON
+      o.user_id = u.id
+      WHERE u.id = {% parameter dynamic_id %}
       GROUP BY 1, 2
        ;;
       persist_for: "24 hours"
       indexes: ["user"]
   }
-#         --COUNT(DISTINCT oi.id) AS distinct_items
+
+  parameter: dynamic_id {
+    type: string
+  }
+
 
   measure: count {
     type: count
