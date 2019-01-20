@@ -43,6 +43,7 @@ explore: test_explore {
 }
 
 explore: order_items {
+  view_label: "1) Order Items"
 #   sql_always_where:
 #     {% if order_items.order_id._in_query or order_items.inventory_item_id._in_query %}
 #     "IT WORKED" = "IT WORKED"
