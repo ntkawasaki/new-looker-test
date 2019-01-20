@@ -14,6 +14,16 @@ view: orders {
     sql: ${TABLE}.id ;;
   }
 
+  dimension: id_link_test {
+    type: number
+    sql: ${TABLE}.id ;;
+    html: {{linked_value}} ;;
+    link: {
+      label: "Hi"
+      url: "www.google.com"
+    }
+  }
+
   dimension: string_id {
     type: string
     sql: ${TABLE}.id ;;
