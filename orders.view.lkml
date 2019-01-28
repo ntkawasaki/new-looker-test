@@ -14,6 +14,60 @@ view: orders {
     sql: ${TABLE}.id ;;
   }
 
+  parameter: dimension_selector {
+    type: unquoted
+    allowed_value: {
+      label: "Option 1"
+      value: "option_1"
+    }
+
+    allowed_value: {
+      label: "Option 2"
+      value: "option_2"
+    }
+  }
+
+  parameter: sub_dimension_selector {
+    type: unquoted
+    allowed_value: {
+      label: "Sub Option 1"
+      value: "sub_option_1"
+    }
+
+    allowed_value: {
+      label: "Sub Option 2"
+      value: "sub_option_2"
+    }
+  }
+
+  dimension: string_id {
+    type: string
+    sql: ${TABLE}.id ;;
+  }
+
+  dimension: selector_dimension {
+    type: string
+    sql:
+    -- Print liquid variables
+    -- Dimension Selector: {{ dimension_selector._parameter_value }}
+    -- Sub Dimension Selector: {{ sub_dimension_selector._parameter_value }}
+    -- String ID In Query: {{ string_id._in_query }}
+
+    {% if dimension_selector._parameter_value == 'option_1' and sub_dimension_selector._parameter_value == 'sub_option_1' %}
+        "IF EXECUTED"
+    {% elsif dimension_selector._parameter_value == 'option_1' and
+       sub_dimension_selector._parameter_value == 'sub_option_2' and
+       string_id._in_query == false
+    %}
+        "ELSIF EXECUTED"
+    {% else %}
+        "ELSE EXECUTED"
+    {% endif %}
+    ;;
+  }
+
+
+
   dimension: id_link_test {
     type: number
     sql: ${TABLE}.id ;;
@@ -22,11 +76,6 @@ view: orders {
       label: "Hi"
       url: "www.google.com"
     }
-  }
-
-  dimension: string_id {
-    type: string
-    sql: ${TABLE}.id ;;
   }
 
   parameter: from_orders {

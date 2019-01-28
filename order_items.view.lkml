@@ -47,6 +47,12 @@ view: order_items {
     sql: ${TABLE}.id ;;
   }
 
+  dimension: left_id {
+    type: number
+    sql: ${TABLE}.id ;;
+    html: <p style="text-align: left">{{value}}</p> ;;
+  }
+
   dimension: id_copy {
     type: number
     sql: ${TABLE}.id ;;
