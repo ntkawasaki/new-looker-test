@@ -1,3 +1,5 @@
+# include: "child_model.model"
+
 view: inventory_items {
   sql_table_name: demo_db.inventory_items ;;
 
