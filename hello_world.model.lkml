@@ -47,6 +47,7 @@ explore: test_explore {
 }
 
 explore: order_items {
+  description: "hellooooo"
 #   sql_always_where:
 #     {% if order_items.order_id._in_query or order_items.inventory_item_id._in_query %}
 #     "IT WORKED" = "IT WORKED"
@@ -154,12 +155,18 @@ explore: user_data {
 #   }
 }
 
-explore: users {}
+# explore: users {
+#   join: user_summary {
+#     type: left_outer
+#     sql_on: ${user_summary.user_id} = ${users.id} ;;
+#     relationship: many_to_one
+#   }
+# }
 
 # named_value_format: brazilian {
 #   value_format: "\R$ 0\,00"
 # }
 
-explore: user_summary {}
+# explore: user_summary {}
 
 explore: test_select_all {}

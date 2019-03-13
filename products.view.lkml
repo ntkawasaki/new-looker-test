@@ -10,6 +10,7 @@ view: products {
 
   dimension: brand {
     type: string
+    hidden: yes
     sql: ${TABLE}.brand ;;
 #     html: {{value}}<p>                                                               </p> ;;
 #     link: {
@@ -23,6 +24,12 @@ view: products {
     sql: ${TABLE}.category ;;
   }
 
+  dimension: long_description {
+    type: string
+    sql: 'Really really really really really really really really long string';;
+    html: {{ value | truncate: 8, '...' }} ;;
+  }
+
 #   dimension: category_liquid {
 #     type:  string
 #     sql: {{ _filters['products.category'] }} ;;
@@ -33,9 +40,28 @@ view: products {
     sql: ${TABLE}.department ;;
   }
 
+  dimension: 1_or_0 {
+    type: number
+    sql: CASE WHEN ${department} = 'Men' THEN 1 ELSE 0 END ;;
+  }
+
+  dimension: true_false {
+    type: string
+    sql: CASE WHEN ${department} = "Men" THEN "true" ELSE "false" END ;;
+  }
+
   dimension: item_name {
     type: string
     sql: ${TABLE}.item_name ;;
+    action: {
+      label: "Test"
+      url: "https://www.google.com"
+      param: {
+        name: "name"
+        value: "value"
+      }
+
+    }
   }
 
   dimension: rank {

@@ -5,6 +5,7 @@ view: users {
     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;
+    tags: ["user_id"]
   }
 
   parameter: country_param {
@@ -59,6 +60,7 @@ view: users {
   dimension: email {
     type: string
     sql: ${TABLE}.email ;;
+    tags: ["email"]
   }
 
   dimension: first_name {
@@ -87,6 +89,35 @@ view: users {
     type: string
     sql: ${TABLE}.state ;;
     map_layer_name: us_states
+  }
+
+  dimension: west {
+    type: yesno
+    sql: ${state} IN ('California', 'Oregon', 'Washington', 'Nevada') ;;
+  }
+
+  dimension: north_east {
+    type: yesno
+    sql: ${state} IN ('California', 'Oregon', 'Washington', 'Nevada') ;;
+  }
+
+  dimension: midwest {
+    type: yesno
+    sql: ${state} IN ('California', 'Oregon', 'Washington', 'Nevada') ;;
+  }
+
+  dimension: south {
+    type: yesno
+    sql: ${state} IN ('California', 'Oregon', 'Washington', 'Nevada') ;;
+  }
+
+  dimension: region {
+    type: string
+    sql: CASE WHEN ${state} IN ('California', 'Oregon', 'Washington', 'Nevada') THEN 'East'
+              WHEN ${state} IN ('California', 'Oregon', 'Washington', 'Nevada') THEN 'West'
+              WHEN ${state} IN ('California', 'Oregon', 'Washington', 'Nevada') THEN 'North'
+              WHEN ${state} IN ('California', 'Oregon', 'Washington', 'Nevada') THEN 'South'
+         END ;;
   }
 
   dimension: zip {

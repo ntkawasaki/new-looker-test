@@ -45,6 +45,7 @@ view: order_items {
     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;
+    tags: ["order_items_id"]
   }
 
   dimension: left_id {
@@ -317,18 +318,6 @@ view: order_items {
     type: number
   }
 
-  measure: percentile_sale_price_liquid {
-    type: number
-    sql: CASE WHEN CAST(FLOOR(COUNT(order_items.sale_price ) * {% parameter percentile_in_decimals %} - 0.00000001) AS SIGNED) + 1 =
-    CAST(FLOOR(COUNT(order_items.sale_price ) * {% parameter percentile_in_decimals %}) AS SIGNED) + 1 OR COUNT(order_items.sale_price ) = 1 THEN
-    CAST(REPLACE(SUBSTRING(CAST(GROUP_CONCAT( LPAD(SUBSTRING(CAST(order_items.sale_price  AS CHAR), 1, 20), 20, '*') ORDER BY
-    order_items.sale_price   SEPARATOR '' ) AS CHAR), (CAST(FLOOR(COUNT(order_items.sale_price ) * {% parameter percentile_in_decimals %} -
-    0.00000001) AS SIGNED) + 1 - 1) * 20 + 1, 20), '*', ' ') AS DECIMAL(20, 5)) ELSE (CAST(REPLACE(SUBSTRING(CAST(GROUP_CONCAT( LPAD(SUBSTRING(CAST(order_items.sale_price  AS
-    CHAR), 1, 20), 20, '*') ORDER BY order_items.sale_price   SEPARATOR '' ) AS CHAR), (CAST(FLOOR(COUNT(order_items.sale_price ) * {% parameter percentile_in_decimals %} - 0.00000001) AS SIGNED)
-    + 1 - 1) * 20 + 1, 20), '*', ' ') AS DECIMAL(20, 5)) + CAST(REPLACE(SUBSTRING(CAST(GROUP_CONCAT( LPAD(SUBSTRING(CAST(order_items.sale_price  AS CHAR), 1, 20), 20, '*') ORDER BY order_items.sale_price   SEPARATOR '' )
-    AS CHAR), (CAST(FLOOR(COUNT(order_items.sale_price ) *{% parameter percentile_in_decimals %}) AS SIGNED) + 1 - 1) * 20 + 1, 20), '*', ' ') AS DECIMAL(20, 5))) / 2 END ;;
-  }
-
   measure: average_sale_price {
     label: "Average Sale\'s"
     type: average
@@ -338,5 +327,10 @@ view: order_items {
   measure: negative_sum_sale_price {
     type: sum
     sql: ${sale_price} - 3000 ;;
+  }
+
+  measure: number {
+    type: number
+    sql: ${negative_sum_sale_price} ;;
   }
 }

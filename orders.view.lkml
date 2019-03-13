@@ -170,6 +170,28 @@ view: orders {
   measure: count {
     type: count
     drill_fields: [id, users.first_name, users.last_name, users.id, order_items.count]
+    # value_format_name: usd
+    html: <p style="color: black">{{ value }}</p> ;;
+  }
+
+  measure: color_count {
+    type: count
+    html:
+    <div style="float: left
+    ; background-color:
+    {% if value > 500 %}
+    rgba(255,0,0,{{ value | times:100 }})
+    {% elsif value < 500 and value > 300 %}
+    rgba(0,255,0,{{ value | times:100 }})
+    {% else %}
+    rgba(0,0,255,{{ value | times:100 }})
+    {% endif %}
+
+    ; text-align:left
+    ; color: #FFFFFF
+    ; border-radius: 5px"> <p style="margin-bottom: 0; margin-left: 4px;">{{ value }}</p>
+    </div>
+    ;;
   }
 
   measure: negative_count {
@@ -197,7 +219,15 @@ view: orders {
     type: count
     filters: {
       field: status
-      value: "completed"
+      value: "completed, pending, cancelled"
+    }
+  }
+
+  measure: not_null_count {
+    type: count
+    filters: {
+      field: status
+      value: "-NULL"
     }
   }
 
