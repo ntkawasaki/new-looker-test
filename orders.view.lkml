@@ -219,6 +219,14 @@ view: orders {
     type: count
     filters: {
       field: status
+      value: "completed"
+    }
+  }
+
+  measure: three_conditions_count {
+    type: count
+    filters: {
+      field: status
       value: "completed, pending, cancelled"
     }
   }
@@ -238,9 +246,6 @@ view: orders {
       value: "pending"
     }
   }
-
-
-
 
   measure: completed_over_pending {
     type: number
