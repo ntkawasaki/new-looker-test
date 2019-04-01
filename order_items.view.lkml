@@ -28,6 +28,11 @@ view: order_items {
     sql: {% parameter string_param %} ;;
   }
 
+  dimension: user_attribute {
+    type: string
+    sql: "{{ _user_attributes['email'] | camelcase }}" ;;
+  }
+
   filter: string_filter {
     type: string
     suggest_dimension: orders.status
@@ -46,6 +51,7 @@ view: order_items {
     type: number
     sql: ${TABLE}.id ;;
     tags: ["order_items_id"]
+    html: <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" /> ;;
   }
 
   dimension: left_id {
@@ -233,6 +239,7 @@ view: order_items {
       label: "Explore Within Threshold: ({{low}}, {{high}})"
       url: "{% assign low = value | minus: threshold._parameter_value %}{% assign high = value | plus: threshold._parameter_value %}/explore/hello_world/order_items?fields=orders.created_month,order_items.plus_minus_count,&f[order_items.count]={{low}} to {{high}}"
     }
+    drill_fields: [id, inventory_items.id, orders.id]
   }
 
   measure: total_sale_price {

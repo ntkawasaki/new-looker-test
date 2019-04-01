@@ -22,6 +22,7 @@ view: user_summary_test {
        ;;
   }
 
+
   parameter: measure_type {
     type: unquoted
     allowed_value: {
