@@ -3,6 +3,7 @@ connection: "thelook"
 include: "*.view"
 include: "*.dashboard"
 
+# hello
 
 datagroup: hello_world_default_datagroup {
   # sql_trigger: SELECT MAX(id) FROM etl_log;;
