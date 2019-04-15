@@ -24,6 +24,12 @@ view: products {
     sql: ${TABLE}.category ;;
   }
 
+
+  dimension: number {
+    type: string
+    sql: ${TABLE}.category ;;
+  }
+
   dimension: long_description {
     type: string
     sql: 'Really really really really really really really really long string';;
