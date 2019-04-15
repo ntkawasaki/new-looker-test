@@ -27,7 +27,7 @@ view: products {
 
   dimension: number {
     type: string
-    sql: ${TABLE}.category ;;
+    sql: 234243 ;;
   }
 
   dimension: long_description {
