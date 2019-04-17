@@ -30,7 +30,10 @@ view: users {
   dimension: age {
     type: number
     sql: ${TABLE}.age ;;
+    drill_fields: [city]
   }
+
+  #
 
   dimension: city {
     type: string
