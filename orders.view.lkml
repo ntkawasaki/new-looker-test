@@ -45,6 +45,11 @@ view: orders {
     sql: ${TABLE}.id ;;
   }
 
+  dimension: string_id_reference {
+    type: string
+    sql: CONCAT(${string_id}, "hello") ;;
+  }
+
   dimension: selector_dimension {
     type: string
     sql:
@@ -90,6 +95,11 @@ view: orders {
     sql: ${TABLE}.created_at ;;
   }
 
+  dimension: created {
+    type: date_raw
+    sql: DATE(${TABLE}.created_at) ;;
+  }
+
   parameter: quarter_parameter {
     type: string
   }
@@ -123,10 +133,25 @@ view: orders {
       WHEN ${status} like "%b%" THEN 'Has Consonant'
       WHEN ${status} like "%e%" THEN 'Has Vowel'
       WHEN ${status} like "%c%" THEN 'Has Consonant'
-      ELSE 'Neither'
+      ELSE ${string_id}
     END
     ;;
   }
+
+  # dimension: lookml_case {
+  #   type: string
+  #   case: {
+  #     when: {
+  #       sql: ${status} = "Completed" ;;
+  #       label: "Its Complete"
+  #     }
+  #     when: {
+  #       sql: ${status} = "Pending" ;;
+  #       label: "Its Pending"
+  #     }
+  #     # else: ${some_column}
+  #   }
+  # }
 
   dimension: lookml_case {
     type: string
@@ -196,6 +221,11 @@ view: orders {
 
   measure: negative_count {
     type: count
+  }
+
+  measure: large_count {
+    type: count
+    html: <p style="font-size: 30"> {{value}} </p> ;;
   }
 
   measure: count_divided {
